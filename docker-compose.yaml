@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  app_todo:
+    image: todo:v1
+    ports:
+      - "5000:5000"
+    networks:
+    - mynet  
+    environment:
+      MONGO_URI:       "mongodb://mongo:27017/"  #?? --olga
+      DEBUG_ENABLED:   "False"
+      LOG_LEVEL:       "INFO" 
+      METRICS_ENABLED: "True"
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+#    volumes:
+#      - mongo_data:/data/db
+    networks:
+      - mynet
+#volumes:
+#  mongo_data: 
+networks:
+  mynet:
+    driver: bridge

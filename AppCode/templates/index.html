@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>To-do list</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>To-do list</h1>
+            <form action="/add" method="POST">
+                <div class="form-group">
+                    <label for="task">New task</label>
+                    <input type="text" id="task" name="task" placeholder="task description" style="width:50%">
+                    <button type="submit" class="btn btn-primary">Add Task</button>
+                </div>
+            </form>
+            <br>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Action items</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.task }}</td>
+                        <td>
+                            <form action="/delete" method="POST" style="float:right" onsubmit="return confirm('Are you sure you want to REMOVE this item?');">
+                                <input type="hidden" name="task" value="{{ task.task }}">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
