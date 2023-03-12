@@ -5,8 +5,8 @@ services:
     image: todo:v1
     ports:
       - "5000:5000"
-    networks:
-    - mynet  
+#    networks:
+#    - mynet  
     environment:
       MONGO_URI:       "mongodb://mongo:27017/"  #?? --olga
       DEBUG_ENABLED:   "False"
@@ -17,12 +17,12 @@ services:
 
   mongo:
     image: mongo:latest
-#    volumes:
-#      - mongo_data:/data/db
-    networks:
-      - mynet
-#volumes:
-#  mongo_data: 
-networks:
-  mynet:
-    driver: bridge
+    volumes:
+      - mongo_data:/data/db
+#    networks:
+#      - mynet
+volumes:
+  mongo_data: 
+#networks:
+#  mynet:
+#    driver: bridge
