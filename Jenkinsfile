@@ -9,7 +9,7 @@ pipeline {
          COWSAY_CONTAINER_NAME = 'portfolio_app_app_todo_1'
          STAGING_SCRIPT = 'staging-k8s.sh'
 
- 
+     }
       //parameters {
       //booleanParam(name: 'SKIP_DEPLOY', defaultValue: false, description: 'SKIP_DEPLOY for feature branches')
       //booleanParam(name: 'SKIP_CLEANUP', defaultValue: false, description: 'SKIP_CLEANUP for feature branches')
