@@ -31,7 +31,8 @@ pipeline {
 
       stage('Git Clone') {
             steps {
-                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'olga-github', url: 'git@github.com:opsdev968/portfolio_app.git']])
+                    checkout scm 
+                    //Git(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'olga-github', url: 'git@github.com:opsdev968/portfolio_app.git']])
 
                 }
         }
