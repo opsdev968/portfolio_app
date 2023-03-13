@@ -29,15 +29,15 @@ pipeline {
 
       stage('Git Clone') {
             steps {
-                    //checkout scm 
+                    checkout scm 
                     //Git(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'olga-github', url: 'git@github.com:opsdev968/portfolio_app.git']])
-                    sh ''
+                    
                 }
         }
         stage('Build') {
             steps {
                 script {
-                    sh(returnStdout: true, script: 'git fetch --all ')
+                    sh(returnStdout: true, script: 'git fetch --set-upstream origin main --all ')
                     
                     def tagList = sh(returnStdout: true, script: 'git tag  --list --sort=-v:refname').trim().split('\n')
                     echo "Existing Git Tags: ${tagList}"
