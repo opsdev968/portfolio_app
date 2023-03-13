@@ -37,7 +37,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def tagList = sh(returnStdout: true, script: 'git tag --sort=-v:refname').trim().split('\n')
+                    def tagList = sh(returnStdout: true, script: 'git tag  --list --sort=-v:refname').trim().split('\n')
                     echo "Existing Git Tags: ${tagList}"
                     
          // Find the most advanced git tag and extract the minor version number
