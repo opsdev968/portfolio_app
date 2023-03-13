@@ -37,8 +37,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def tempTagList = sh(returnStdout: true, script: 'git tag  --list --sort=-v:refname')
-                     echo "Existing tempTagList: ${tempTagList}"
+                    sh(returnStdout: true, script: 'git fetch --all ')
+                    
                     def tagList = sh(returnStdout: true, script: 'git tag  --list --sort=-v:refname').trim().split('\n')
                     echo "Existing Git Tags: ${tagList}"
                     
