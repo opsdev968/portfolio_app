@@ -54,12 +54,12 @@ pipeline {
 
                     echo "patch = ${patch}"
          // Construct the new version string
-                    def newVersion = "${major}'.'${patch}"
+                    def newVersion = "${major}.${patch}"
          
 
                     //def nextVersion = "${currentVersion.split('.')[0]}.${currentVersion.split('.')[0].toInteger() + 1}"
                     //def nextVersion = lastTag =~ /v(\d+)\.(\d+)/ ? "${RegExp.$1}.${RegExp.$2.toInteger() + 1}" : "1.0"
-                    echo "Next Version: ${nextVersion}"
+                    echo "Next Version: ${newVersion}"
                     
         // Set the version number as an environment variable for use in following stages
                     env.VERSION = nextVersion
