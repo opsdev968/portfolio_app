@@ -37,7 +37,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh(returnStdout: true, script: 'git fetch --set-upstream origin main --all ')
+                    sh(returnStdout: true, script: 'git fetch --set-upstream origin main ') // --all
                     
                     def tagList = sh(returnStdout: true, script: 'git tag  --list --sort=-v:refname').trim().split('\n')
                     echo "Existing Git Tags: ${tagList}"
