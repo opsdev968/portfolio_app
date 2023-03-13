@@ -64,7 +64,7 @@ pipeline {
                     echo "VERSION=${env.VERSION}"
         }
                 echo 'Building..'                            
-                sh "docker build -t todo.olgag:${newVersion}  -t todo.olgag:latest ."        
+                sh "docker build -t todo.olgag:${env.VERSION}  -t todo.olgag:latest ."        
 
                 // Push the new tag to Git repository
                 echo 'Git tag push New..' 
