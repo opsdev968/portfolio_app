@@ -9,6 +9,7 @@ pipeline {
          COWSAY_CONTAINER_NAME = 'portfolio_app_app_todo_1'
          STAGING_SCRIPT = 'staging-k8s.sh'
          GIT_SSH_COMMAND = "ssh -o StrictHostKeyChecking=no"
+         ECR_URI ='644435390668.dkr.ecr.eu-west-2.amazonaws.com/olgag-ecr-prv'
 
      }
       //parameters {
@@ -88,9 +89,9 @@ pipeline {
             steps {
                 echo 'Publish..'  
                  withAWS(credentials:'olga-aws',region:'eu-west-2') {    
-                    sh "aws ecr get-login-password --region ${env.AWS_REGION} | docker login --username AWS --password-stdin 644435390668.dkr.ecr.${env.AWS_REGION}.amazonaws.com"          
-                    sh "docker tag todo.olgag:v${env.VERSION} 644435390668.dkr.ecr.${env.AWS_REGION}.amazonaws.com/todo.olgag:v${env.VERSION}  "
-                    sh "docker push 644435390668.dkr.ecr.${env.AWS_REGION}.amazonaws.com/todo.olgag:v${env.VERSION} "
+                    sh "aws ecr get-login-password --region ${env.AWS_REGION} | docker login --username AWS --password-stdin ${env.ECR_URI}"                                        
+                    sh "docker tag ${env.IMG_NAME}:${env.VERSION} ${env.ECR_URI}:${env.IMG_NAME}-${env.VERSION}"
+                    sh "docker push ${env.ECR_URI}:${env.IMG_NAME}-${env.VERSION}"
             }
             }
         }         
