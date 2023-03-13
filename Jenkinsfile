@@ -52,8 +52,9 @@ pipeline {
                     
                     patch += 1
 
+                    echo "patch = ${patch}"
          // Construct the new version string
-                    def newVersion = "v${major}.${patch}"
+                    def newVersion = "${major}.${patch}"
          
 
                     //def nextVersion = "${currentVersion.split('.')[0]}.${currentVersion.split('.')[0].toInteger() + 1}"
