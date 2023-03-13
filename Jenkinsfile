@@ -67,7 +67,11 @@ pipeline {
                 sh "docker build -t todo:olgag.v${newVersion}  -t todo:olgag.latest ."        
 
                 // Push the new tag to Git repository
+                echo 'Git tag push New..' 
                 sh "git tag v${newVersion}"
+
+                echo 'Git tag push latest..' 
+
                 sh "git push origin v${newVersion}"           
             }
         }
