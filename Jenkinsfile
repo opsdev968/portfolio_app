@@ -45,10 +45,7 @@ pipeline {
          // Find the most advanced git tag and extract the minor version number
                     def lastTag = tagList[0]
                     echo "lastTag $lastTag"
-                    newString = lastTag.replaceAll('v', '')
-                    echo "newString $newString"
-
-                    def currentVersion = lastTag =~ /v(\d+)\.(\d+)/ ? "${RegExp.$1}.${RegExp.$2}" : "1.0"
+                    currentVersion = lastTag.replaceAll('v', '')                   
                     echo "Current Version: ${currentVersion}"
                     
          // Increment the minor version number
