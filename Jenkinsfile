@@ -64,15 +64,15 @@ pipeline {
                     echo "VERSION=${env.VERSION}"
         }
                 echo 'Building..'                            
-                sh "docker build -t todo.olgag:${env.VERSION}  -t todo.olgag:latest ."        
+                sh "docker build -t todo.olgag:v${env.VERSION}  -t todo.olgag:latest ."        
 
                 // Push the new tag to Git repository
                 echo 'Git tag push New..' 
-                sh "git tag v${newVersion}"
+                sh "git tag v${env.VERSION}"
 
                 echo 'Git tag push latest..' 
 
-                sh "git push origin v${newVersion}"           
+                sh "git push origin v${env.VERSION}"           
             }
         }
         stage('Local Test') {
