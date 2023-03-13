@@ -46,7 +46,7 @@ pipeline {
                     echo "Current Version: ${currentVersion}"
                     
          // Increment the minor version number
-                    def parts = "1.0".split('.')
+                    def parts = currentVersion.tokenize('.')
                     def major = parts[0].toInteger()
                     def patch = parts[1].toInteger()
                     
