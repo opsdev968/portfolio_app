@@ -64,7 +64,7 @@ pipeline {
                     echo "VERSION=${env.VERSION}"
         }
                 echo 'Building..'                            
-                sh "docker build -t todo.olgag:v${env.VERSION}  -t todo.olgag:latest ."        
+                sh "docker build -t ${env.IMG_NAME}:${env.VERSION}  -t ${env.IMG_NAME}:latest ."        
 
                 // Push the new tag to Git repository
                 echo 'Git tag push New..' 
@@ -105,7 +105,7 @@ pipeline {
                 echo 'Deploying....'
                 script{
               
-                   withCredentials([sshUserPrivateKey(credentialsId: "ck2-olga", keyFileVariable: 'keyfile')]) {                           
+                   withCredentials([sshUserPrivateKey(credentialsId: "olga-aws", keyFileVariable: 'keyfile')]) {                           
                       sh "scp -i ${keyfile} -o StrictHostKeyChecking=no  Deploy.sh ubuntu@52.31.114.218:Deploy.sh"
                       sh "ssh -i ${keyfile} ubuntu@52.31.114.218 -o StrictHostKeyChecking=no  ./Deploy.sh ${env.BUILD_ID} ${COW_FORWARDED_PORT} "                  
                  }
