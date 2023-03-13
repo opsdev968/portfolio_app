@@ -13,9 +13,9 @@ pipeline {
          //STAGING_FORWARDED_PORT = '3000'
          //OTHER_FORWARDED_PORT = '3001'
     }
-      parameters {
-        booleanParam(name: 'SKIP_DEPLOY', defaultValue: false, description: 'SKIP_DEPLOY for feature branches')
-        booleanParam(name: 'SKIP_CLEANUP', defaultValue: false, description: 'SKIP_CLEANUP for feature branches')
+      //parameters {
+      //booleanParam(name: 'SKIP_DEPLOY', defaultValue: false, description: 'SKIP_DEPLOY for feature branches')
+      //booleanParam(name: 'SKIP_CLEANUP', defaultValue: false, description: 'SKIP_CLEANUP for feature branches')
     }
     stages {
         stage('Init') {
