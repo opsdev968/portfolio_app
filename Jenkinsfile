@@ -53,10 +53,8 @@ pipeline {
                     env.VERSION = nextVersion
                     echo "VERSION=${env.VERSION}"
         }
-         //MASTER_FORWARDED_PORT = '80'
-         //STAGING_FORWARDED_PORT = '3000'
-         //OTHER_FORWARDED_PORT = '3001'
-    }
+     
+  
                 
  
                 echo 'Building..'     
