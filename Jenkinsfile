@@ -45,7 +45,7 @@ pipeline {
                 
  
                 echo 'Building..'     
-                echo " ${branchName} - ${commitHash} - ${imageTag}"           
+                echo "the var -  ${branchName} - ${commitHash} - ${imageTag}"           
                 sh "docker build -t todo:olgag.${env.BUILD_ID}  -t todo:olgag.latest ."                 
             }
         }
