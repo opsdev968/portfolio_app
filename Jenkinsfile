@@ -30,17 +30,14 @@ pipeline {
 
       stage('Git Clone') {
             steps {
-                    //checkout scm 
+                    checkout scm 
                     //Git(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'olga-github', url: 'git@github.com:opsdev968/portfolio_app.git']])
-
-                    git credentialsId: 'olga-github', url: 'git@github.com:opsdev968/portfolio_app.git'
-                    
                 }
         }
         stage('Build') {
             steps {
                 script {
-                    sh(returnStdout: true, script: 'git fetch --set-upstream origin main ') // --all
+                    //sh(returnStdout: true, script: 'git fetch --set-upstream origin main ') // --all
                     
                     def tagList = sh(returnStdout: true, script: 'git tag  --list --sort=-v:refname').trim().split('\n')
                     echo "Existing Git Tags: ${tagList}"
@@ -75,7 +72,7 @@ pipeline {
 
                 echo 'Git tag push latest..' 
 
-                sh "git push origin v${env.VERSION}"           
+               // sh "git push origin v${env.VERSION}"           
             }
         }
         stage('Local Test') {
@@ -91,10 +88,10 @@ pipeline {
         stage('Publish') {
             steps {
                 echo 'Publish..'  
-                 withAWS(credentials:'aws-olgag',region:'eu-west-2') {    
+                 withAWS(credentials:'olga-github',region:'eu-west-2') {    
                     sh "aws ecr get-login-password --region ${env.AWS_REGION} | docker login --username AWS --password-stdin 644435390668.dkr.ecr.${env.AWS_REGION}.amazonaws.com"          
-                    sh "docker tag todo:olgag.${env.BUILD_ID} 644435390668.dkr.ecr.${env.AWS_REGION}.amazonaws.com/todo:olgag.${env.BUILD_ID} "
-                    sh "docker push 644435390668.dkr.ecr.${env.AWS_REGION}.amazonaws.com/todo:olgag.${env.BUILD_ID}"
+                    sh "docker tag todo.olgag:${env.BUILD_ID} 644435390668.dkr.ecr.${env.AWS_REGION}.amazonaws.com/todo.olgag:${env.BUILD_ID} "
+                    sh "docker push 644435390668.dkr.ecr.${env.AWS_REGION}.amazonaws.com/todo.olgag:${env.BUILD_ID}"
             }
             }
         }         
