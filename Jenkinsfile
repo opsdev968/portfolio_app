@@ -9,6 +9,7 @@ pipeline {
          COWSAY_CONTAINER_NAME = 'portfolio_app_app_todo_1'
          STAGING_SCRIPT = 'staging-k8s.sh'
 
+        script {
         def tagList = sh(returnStdout: true, script: 'git tag --sort=-v:refname').trim().split('\n')
         echo "Existing Git Tags: ${tagList}"
                     
@@ -24,6 +25,7 @@ pipeline {
         // Set the version number as an environment variable for use in following stages
         env.VERSION = nextVersion
         echo "VERSION=${env.VERSION}"
+        }
          //MASTER_FORWARDED_PORT = '80'
          //STAGING_FORWARDED_PORT = '3000'
          //OTHER_FORWARDED_PORT = '3001'
