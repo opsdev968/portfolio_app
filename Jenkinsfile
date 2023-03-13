@@ -46,7 +46,7 @@ pipeline {
                     echo "Current Version: ${currentVersion}"
                     
          // Increment the minor version number
-                    def nextVersion = "${currentVersion.split('.')[0]}.${currentVersion.split('.')[1].toInteger() + 1}"
+                    def nextVersion = "${currentVersion.split('.')[0]}.${currentVersion.split('.')[0].toInteger() + 1}"
                     echo "Next Version: ${nextVersion}"
                     
         // Set the version number as an environment variable for use in following stages
