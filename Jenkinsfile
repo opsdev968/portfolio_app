@@ -37,6 +37,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    def tempTagList = sh(returnStdout: true, script: 'git tag  --list --sort=-v:refname')
+                     echo "Existing tempTagList: ${tempTagList}"
                     def tagList = sh(returnStdout: true, script: 'git tag  --list --sort=-v:refname').trim().split('\n')
                     echo "Existing Git Tags: ${tagList}"
                     
@@ -55,23 +57,18 @@ pipeline {
                     echo "patch = ${patch}"
          // Construct the new version string
                     def newVersion = "${major}.${patch}"
-         
-
-                    //def nextVersion = "${currentVersion.split('.')[0]}.${currentVersion.split('.')[0].toInteger() + 1}"
-                    //def nextVersion = lastTag =~ /v(\d+)\.(\d+)/ ? "${RegExp.$1}.${RegExp.$2.toInteger() + 1}" : "1.0"
                     echo "Next Version: ${newVersion}"
                     
         // Set the version number as an environment variable for use in following stages
-                    env.VERSION = nextVersion
+                    env.VERSION = newVersion
                     echo "VERSION=${env.VERSION}"
         }
-     
-  
-                
- 
-                echo 'Building..'     
-                echo "the var -  ${branchName} - ${commitHash} - ${imageTag}"           
-                sh "docker build -t todo:olgag.${env.BUILD_ID}  -t todo:olgag.latest ."                 
+                echo 'Building..'                            
+                sh "docker build -t todo:olgag.v${newVersion}  -t todo:olgag.latest ."        
+
+                // Push the new tag to Git repository
+                sh "git tag v${newVersion}"
+                sh "git push origin v${newVersion}"           
             }
         }
         stage('Local Test') {
