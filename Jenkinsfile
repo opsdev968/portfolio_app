@@ -1,6 +1,7 @@
 pipeline {              
     agent any
      environment { 
+         AWS_REGION = 'eu-west-2'
          STAGING_SERVER_USERNAME = 'ubuntu' 
          STAGING_SERVER_IP = '52.31.114.218'
          IMG_NAME = 'todo'           
@@ -46,7 +47,7 @@ pipeline {
         stage('Local Test') {
             steps {
                 echo 'Testing..'             
-                sh "docker rm -f portfolio_app_mongo_1 2> /dev/null || true"
+                sh "docker rm -f todo-olgag 2> /dev/null || true"
                 //sh "docker run -d --rm -p $COWSAY_FORWARDED_PORT:8080 --network="host" --name cowsay-olgag cowsay:olgag.${env.BUILD_ID}  "   
                 //sh "curl http://localhost:8686"
                 // ??? sh 'docker run --rm --network="host" curlimages/curl curl http://localhost:8686'
@@ -56,10 +57,10 @@ pipeline {
         stage('Publish') {
             steps {
                 echo 'Publish..'  
-                 withAWS(credentials:'aws-olgag',region:'eu-west-1') {    
-                    sh "aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 644435390668.dkr.ecr.eu-west-1.amazonaws.com"          
-                    sh "docker tag cowsay:olgag.${env.BUILD_ID} 644435390668.dkr.ecr.eu-west-1.amazonaws.com/cowsay:olgag.${env.BUILD_ID} "
-                    sh "docker push 644435390668.dkr.ecr.eu-west-1.amazonaws.com/cowsay:olgag.${env.BUILD_ID}"
+                 withAWS(credentials:'aws-olgag',region:${env.AWS_REGION}) {    
+                    sh "aws ecr get-login-password --region ${env.AWS_REGION} | docker login --username AWS --password-stdin 644435390668.dkr.ecr.${env.AWS_REGION}.amazonaws.com"          
+                    sh "docker tag todo:olgag.${env.BUILD_ID} 644435390668.dkr.ecr.${env.AWS_REGION}.amazonaws.com/todo:olgag.${env.BUILD_ID} "
+                    sh "docker push 644435390668.dkr.ecr.${env.AWS_REGION}.amazonaws.com/todo:olgag.${env.BUILD_ID}"
             }
             }
         }         
@@ -104,8 +105,8 @@ pipeline {
                     if (params.SKIP_CLEANUP == false && params.SKIP_DEPLOY == false)
                     {
                        withCredentials([sshUserPrivateKey(credentialsId: "ck2-olga", keyFileVariable: 'keyfile')]){         
-                        sh "ssh -i ${keyfile} ubuntu@52.31.114.218 -o StrictHostKeyChecking=no  docker rm -f cowsay-olgag 2> /dev/null || true"
-                        sh "ssh -i ${keyfile} ubuntu@52.31.114.218 -o StrictHostKeyChecking=no  docker rmi 644435390668.dkr.ecr.eu-west-1.amazonaws.com/cowsay:olgag.${env.BUILD_ID} 2> /dev/null || true"
+                        sh "ssh -i ${keyfile} ubuntu@52.31.114.218 -o StrictHostKeyChecking=no  docker rm -f todo-olgag 2> /dev/null || true"
+                        sh "ssh -i ${keyfile} ubuntu@52.31.114.218 -o StrictHostKeyChecking=no  docker rmi 644435390668.dkr.ecr.eu-west-1.amazonaws.com/todo:olgag.${env.BUILD_ID} 2> /dev/null || true"
                     }
                 }               
             }
