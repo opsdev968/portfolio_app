@@ -88,7 +88,7 @@ pipeline {
         stage('Publish') {
             steps {
                 echo 'Publish..'  
-                 withAWS(credentials:'olga-aws',region:'eu-west-2') {    
+                 withAWS(credentials:'olga-aws',region:"${env.AWS_REGION}") {    
                     sh "aws ecr get-login-password --region ${env.AWS_REGION} | docker login --username AWS --password-stdin ${env.ECR_URI}"                                        
                     sh "docker tag ${env.IMG_NAME}:${env.VERSION} ${env.ECR_URI}:${env.IMG_NAME}-${env.VERSION}"
                     sh "docker push ${env.ECR_URI}:${env.IMG_NAME}-${env.VERSION}"
