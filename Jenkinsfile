@@ -9,6 +9,9 @@ pipeline {
          COWSAY_CONTAINER_NAME = 'portfolio_app_app_todo_1'
          STAGING_SCRIPT = 'staging-k8s.sh'
 
+        def branchName = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+        def commitHash = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+        def imageTag = "${branchName}:${commitHash}"
          //MASTER_FORWARDED_PORT = '80'
          //STAGING_FORWARDED_PORT = '3000'
          //OTHER_FORWARDED_PORT = '3001'
@@ -39,8 +42,10 @@ pipeline {
         }
         stage('Build') {
             steps {
+                
  
-                echo 'Building..'                
+                echo 'Building..'     
+                echo " ${branchName} - ${commitHash} - ${imageTag}"           
                 sh "docker build -t todo:olgag.${env.BUILD_ID}  -t todo:olgag.latest ."                 
             }
         }
