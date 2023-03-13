@@ -57,7 +57,7 @@ pipeline {
         stage('Publish') {
             steps {
                 echo 'Publish..'  
-                 withAWS(credentials:'aws-olgag',region:${env.AWS_REGION}) {    
+                 withAWS(credentials:'aws-olgag',region:'eu-west-2') {    
                     sh "aws ecr get-login-password --region ${env.AWS_REGION} | docker login --username AWS --password-stdin 644435390668.dkr.ecr.${env.AWS_REGION}.amazonaws.com"          
                     sh "docker tag todo:olgag.${env.BUILD_ID} 644435390668.dkr.ecr.${env.AWS_REGION}.amazonaws.com/todo:olgag.${env.BUILD_ID} "
                     sh "docker push 644435390668.dkr.ecr.${env.AWS_REGION}.amazonaws.com/todo:olgag.${env.BUILD_ID}"
