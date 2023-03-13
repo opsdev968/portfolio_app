@@ -9,9 +9,21 @@ pipeline {
          COWSAY_CONTAINER_NAME = 'portfolio_app_app_todo_1'
          STAGING_SCRIPT = 'staging-k8s.sh'
 
-        def branchName = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-        def commitHash = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-        def imageTag = "${branchName}:${commitHash}"
+        def tagList = sh(returnStdout: true, script: 'git tag --sort=-v:refname').trim().split('\n')
+        echo "Existing Git Tags: ${tagList}"
+                    
+         // Find the most advanced git tag and extract the minor version number
+        def lastTag = tagList[0]
+        def currentVersion = lastTag =~ /v(\d+)\.(\d+)/ ? "${RegExp.$1}.${RegExp.$2}" : "1.0"
+        echo "Current Version: ${currentVersion}"
+                    
+         // Increment the minor version number
+        def nextVersion = "${currentVersion.split('.')[0]}.${currentVersion.split('.')[1].toInteger() + 1}"
+        echo "Next Version: ${nextVersion}"
+                    
+        // Set the version number as an environment variable for use in following stages
+        env.VERSION = nextVersion
+        echo "VERSION=${env.VERSION}"
          //MASTER_FORWARDED_PORT = '80'
          //STAGING_FORWARDED_PORT = '3000'
          //OTHER_FORWARDED_PORT = '3001'
