@@ -46,11 +46,18 @@ pipeline {
                     echo "Current Version: ${currentVersion}"
                     
          // Increment the minor version number
+                    def parts = version.split('.')
+                    def major = parts[0].toInteger()
+                    def patch = parts[1].toInteger()
+                    
+                    patch += 1
 
+         // Construct the new version string
+                    def newVersion = "v${major}.${patch}"
          
 
                     //def nextVersion = "${currentVersion.split('.')[0]}.${currentVersion.split('.')[0].toInteger() + 1}"
-                    def nextVersion = lastTag =~ /v(\d+)\.(\d+)/ ? "${RegExp.$1}.${RegExp.$2.toInteger() + 1}" : "1.0"
+                    //def nextVersion = lastTag =~ /v(\d+)\.(\d+)/ ? "${RegExp.$1}.${RegExp.$2.toInteger() + 1}" : "1.0"
                     echo "Next Version: ${nextVersion}"
                     
         // Set the version number as an environment variable for use in following stages
