@@ -70,42 +70,9 @@ pipeline {
 
         stage('Build') {
             steps {
-        //         script {
-        //             def tagList = sh(returnStdout: true, script: 'git tag  --list --sort=-v:refname').trim().split('\n')
-        //             echo "Existing Git Tags: ${tagList}"
-                    
-        //  Find the most advanced git tag and extract the minor version number
-        //             def lastTag = tagList[0]
-        //             echo "lastTag $lastTag"
-        //             currentVersion = lastTag.replaceAll('v', '')                   
-        //             echo "Current Version: ${currentVersion}"
-                    
-        //  Increment the minor version number
-        //             def parts = currentVersion.tokenize('.')
-        //             def major = parts[0].toInteger()
-        //             def patch = parts[1].toInteger()
-                    
-        //             patch += 1
-
-        //             echo "patch = ${patch}"
-        //  Construct the new version string
-        //             def newVersion = "${major}.${patch}"
-        //             echo "Next Version: ${newVersion}"
-                    
-        // Set the version number as an environment variable for use in following stages
-        //             env.VERSION = newVersion
-        //             echo "VERSION=${env.VERSION}"
-        // }
+        
                 echo 'Building..'                            
-                sh "docker build -t ${env.IMG_NAME}:${env.VERSION}  -t ${env.IMG_NAME}:latest ."        
-
-                // Push the new tag to Git repository
-                //echo 'Git tag push New..' 
-                //sh "git tag v${env.VERSION}"
-
-                //echo 'Git tag push latest..' 
-
-                //sh "git push origin v${env.VERSION}"           
+                sh "docker build -t ${env.IMG_NAME}:${env.VERSION}  -t ${env.IMG_NAME}:latest ."                           
             }
         }
 
