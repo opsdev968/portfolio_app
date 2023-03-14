@@ -103,7 +103,7 @@ pipeline {
                 echo 'Git tag push New..' 
                 sh "git tag v${env.VERSION}"
 
-                echo 'Git tag push latest..' 
+                //echo 'Git tag push latest..' 
 
                 //sh "git push origin v${env.VERSION}"           
             }
@@ -114,11 +114,7 @@ pipeline {
               branch 'main'
             }
             steps {
-                sh("""
-                    git config user.name ${GITHUB_USERNAME}
-                    git config user.email ${GITHUB_USERNAME}
-                    git tag -a v${VERSION} -m "[Jenkins CI] New Tag"
-                """)
+              
                 
                 sshagent(['olga-aws']) {
                     sh("""
