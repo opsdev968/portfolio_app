@@ -138,8 +138,10 @@ pipeline {
                 sh "echo ======================"       
                 sh "docker images | grep mongo"
                 sh "echo ======================"   
-                sh "docker rm -f todo-portfolio_app_mongo_1 2> /dev/null || true"
+                sh "docker rm -f olga-portfolio_main-app_todo-1 2> /dev/null || true"
                 sh "docker-compose up -d "
+                sh "docker ps | grep 5151 "
+                sh "docker-compose down "
                 //sh "docker run -d --rm -p $COWSAY_FORWARDED_PORT:8080 --network="host" --name cowsay-olgag cowsay:olgag.${env.BUILD_ID}  "   
                 //sh "curl http://localhost:8686"
                 // ??? sh 'docker run --rm --network="host" curlimages/curl curl http://localhost:8686'

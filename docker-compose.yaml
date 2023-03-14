@@ -4,7 +4,7 @@ services:
   app_todo:
     image: todo
     ports:
-      - "5000:5000"
+      - "5151:5000"
 #    networks:
 #    - mynet  
     environment:
