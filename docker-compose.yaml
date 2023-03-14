@@ -16,7 +16,7 @@ services:
       - mongo
 
   mongo:
-    image: mongo:latest
+    image: mongo
     volumes:
       - mongo_data:/data/db
 #    networks:
