@@ -120,7 +120,7 @@ pipeline {
                     git tag -a v${VERSION} -m "[Jenkins CI] New Tag"
                 """)
                 
-                sshagent(['amit-ssh-GitHub']) {
+                sshagent(['olga-aws']) {
                     sh("""
                         #!/usr/bin/env bash
                         set +x
