@@ -134,7 +134,7 @@ pipeline {
             steps {
                 echo 'Testing..'             
                 sh "docker rm -f todo-portfolio_app_mongo_1 2> /dev/null || true"
-                sh "docker-compose up -d "
+                //sh "docker-compose up -d "
                 //sh "docker run -d --rm -p $COWSAY_FORWARDED_PORT:8080 --network="host" --name cowsay-olgag cowsay:olgag.${env.BUILD_ID}  "   
                 //sh "curl http://localhost:8686"
                 // ??? sh 'docker run --rm --network="host" curlimages/curl curl http://localhost:8686'
