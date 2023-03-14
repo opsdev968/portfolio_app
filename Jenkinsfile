@@ -100,8 +100,8 @@ pipeline {
                 sh "docker build -t ${env.IMG_NAME}:${env.VERSION}  -t ${env.IMG_NAME}:latest ."        
 
                 // Push the new tag to Git repository
-                echo 'Git tag push New..' 
-                sh "git tag v${env.VERSION}"
+                //echo 'Git tag push New..' 
+                //sh "git tag v${env.VERSION}"
 
                 //echo 'Git tag push latest..' 
 
@@ -114,7 +114,11 @@ pipeline {
               branch 'main'
             }
             steps {
-              
+                sh("""
+                    git config user.name ${GITHUB_USERNAME}
+                    git config user.email ${GITHUB_USERNAME}
+                    git tag -a v${VERSION} -m "[Jenkins CI] New Tag"
+                """)
                 
                 sshagent(['olga-github']) {
                     sh("""
