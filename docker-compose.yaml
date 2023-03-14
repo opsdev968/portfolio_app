@@ -2,7 +2,7 @@ version: '3'
 
 services:
   app_todo:
-    image: todo:v1
+    image: todo
     ports:
       - "5000:5000"
 #    networks:

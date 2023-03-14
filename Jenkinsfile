@@ -132,7 +132,12 @@ pipeline {
         }
         stage('Local Test') {
             steps {
-                echo 'Testing..'             
+                echo 'Testing..'     
+
+                sh "docker images" 
+                sh "echo ======================"       
+                sh "docker images | grep mongo"
+                sh "echo ======================"   
                 sh "docker rm -f todo-portfolio_app_mongo_1 2> /dev/null || true"
                 sh "docker-compose up -d "
                 //sh "docker run -d --rm -p $COWSAY_FORWARDED_PORT:8080 --network="host" --name cowsay-olgag cowsay:olgag.${env.BUILD_ID}  "   
