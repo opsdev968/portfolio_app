@@ -11,6 +11,8 @@ pipeline {
          GIT_SSH_COMMAND = "ssh -o StrictHostKeyChecking=no"
          ECR_URI ='644435390668.dkr.ecr.eu-west-2.amazonaws.com/olgag-ecr-prv'
 
+         GITHUB_USERNAME ="opsdev968"
+
      }
       //parameters {
       //booleanParam(name: 'SKIP_DEPLOY', defaultValue: false, description: 'SKIP_DEPLOY for feature branches')
@@ -68,32 +70,32 @@ pipeline {
 
         stage('Build') {
             steps {
-                script {
-                    def tagList = sh(returnStdout: true, script: 'git tag  --list --sort=-v:refname').trim().split('\n')
-                    echo "Existing Git Tags: ${tagList}"
+        //         script {
+        //             def tagList = sh(returnStdout: true, script: 'git tag  --list --sort=-v:refname').trim().split('\n')
+        //             echo "Existing Git Tags: ${tagList}"
                     
-         // Find the most advanced git tag and extract the minor version number
-                    def lastTag = tagList[0]
-                    echo "lastTag $lastTag"
-                    currentVersion = lastTag.replaceAll('v', '')                   
-                    echo "Current Version: ${currentVersion}"
+        //  Find the most advanced git tag and extract the minor version number
+        //             def lastTag = tagList[0]
+        //             echo "lastTag $lastTag"
+        //             currentVersion = lastTag.replaceAll('v', '')                   
+        //             echo "Current Version: ${currentVersion}"
                     
-         // Increment the minor version number
-                    def parts = currentVersion.tokenize('.')
-                    def major = parts[0].toInteger()
-                    def patch = parts[1].toInteger()
+        //  Increment the minor version number
+        //             def parts = currentVersion.tokenize('.')
+        //             def major = parts[0].toInteger()
+        //             def patch = parts[1].toInteger()
                     
-                    patch += 1
+        //             patch += 1
 
-                    echo "patch = ${patch}"
-         // Construct the new version string
-                    def newVersion = "${major}.${patch}"
-                    echo "Next Version: ${newVersion}"
+        //             echo "patch = ${patch}"
+        //  Construct the new version string
+        //             def newVersion = "${major}.${patch}"
+        //             echo "Next Version: ${newVersion}"
                     
         // Set the version number as an environment variable for use in following stages
-                    env.VERSION = newVersion
-                    echo "VERSION=${env.VERSION}"
-        }
+        //             env.VERSION = newVersion
+        //             echo "VERSION=${env.VERSION}"
+        // }
                 echo 'Building..'                            
                 sh "docker build -t ${env.IMG_NAME}:${env.VERSION}  -t ${env.IMG_NAME}:latest ."        
 
@@ -106,10 +108,33 @@ pipeline {
                 //sh "git push origin v${env.VERSION}"           
             }
         }
+
+        stage('Push Git tag') {
+            when {
+              branch 'main'
+            }
+            steps {
+                sh("""
+                    git config user.name ${GITHUB_USERNAME}
+                    git config user.email ${GITHUB_USERNAME}
+                    git tag -a v${VERSION} -m "[Jenkins CI] New Tag"
+                """)
+                
+                sshagent(['amit-ssh-GitHub']) {
+                    sh("""
+                        #!/usr/bin/env bash
+                        set +x
+                        export GIT_SSH_COMMAND="ssh -oStrictHostKeyChecking=no"
+                        git push origin v${VERSION}
+                     """)
+                }
+            }
+        }
         stage('Local Test') {
             steps {
                 echo 'Testing..'             
-                sh "docker rm -f todo-olgag 2> /dev/null || true"
+                sh "docker rm -f todo-portfolio_app_mongo_1 2> /dev/null || true"
+                sh "docker-compose up -d "
                 //sh "docker run -d --rm -p $COWSAY_FORWARDED_PORT:8080 --network="host" --name cowsay-olgag cowsay:olgag.${env.BUILD_ID}  "   
                 //sh "curl http://localhost:8686"
                 // ??? sh 'docker run --rm --network="host" curlimages/curl curl http://localhost:8686'
