@@ -116,7 +116,7 @@ pipeline {
             steps {
               
                 
-                sshagent(['olga-aws']) {
+                sshagent(['olga-github']) {
                     sh("""
                         #!/usr/bin/env bash
                         set +x
