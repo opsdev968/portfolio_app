@@ -1,4 +1,4 @@
-pipeline {              pipeline
+pipeline {              
     agent any
      environment { 
          AWS_REGION = 'eu-west-2'
@@ -29,6 +29,7 @@ pipeline {              pipeline
          }
         }
         }
+    }
      /// Enf of Var definitions
 
       stage('Git Clone') {
@@ -204,4 +205,4 @@ pipeline {              pipeline
 //            }        
 //        }
 //    }
-}
+
