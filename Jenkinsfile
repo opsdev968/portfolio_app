@@ -146,54 +146,54 @@ pipeline {
          }
         }
         
-        stage('Deploy EC2') {
-             when {
-                    anyOf { branch 'master'                      
-                            branch 'staging'
-                             expression { branch 'feature/*'  && params.SKIP_DEPLOY == false }}
-            }
-            steps {
-                echo 'Deploying....'
-                script{
+    //     stage('Deploy EC2') {
+    //          when {
+    //                 anyOf { branch 'master'                      
+    //                         branch 'staging'
+    //                          expression { branch 'feature/*'  && params.SKIP_DEPLOY == false }}
+    //         }
+    //         steps {
+    //             echo 'Deploying....'
+    //             script{
               
-                   withCredentials([sshUserPrivateKey(credentialsId: "olga-aws", keyFileVariable: 'keyfile')]) {                           
-                      sh "scp -i ${keyfile} -o StrictHostKeyChecking=no  Deploy.sh ubuntu@52.31.114.218:Deploy.sh"
-                      sh "ssh -i ${keyfile} ubuntu@52.31.114.218 -o StrictHostKeyChecking=no  ./Deploy.sh ${env.BUILD_ID} ${COW_FORWARDED_PORT} "                  
-                 }
-                }                          
-            }
-        }
-        stage('test with curl EC2') {
-        when {  anyOf {branch 'master' 
-                       branch 'staging'
-                       }
-             }
+    //                withCredentials([sshUserPrivateKey(credentialsId: "olga-aws", keyFileVariable: 'keyfile')]) {                           
+    //                   sh "scp -i ${keyfile} -o StrictHostKeyChecking=no  Deploy.sh ubuntu@52.31.114.218:Deploy.sh"
+    //                   sh "ssh -i ${keyfile} ubuntu@52.31.114.218 -o StrictHostKeyChecking=no  ./Deploy.sh ${env.BUILD_ID} ${COW_FORWARDED_PORT} "                  
+    //              }
+    //             }                          
+    //         }
+    //     }
+    //     stage('test with curl EC2') {
+    //     when {  anyOf {branch 'master' 
+    //                    branch 'staging'
+    //                    }
+    //          }
 
-            steps {
-                  timeout(time: 5, unit: 'SECONDS') {  
-                    retry(5) {
-                            script{
-                               sh "curl http://52.31.114.218:${COW_FORWARDED_PORT}"                           
-                            }   
-                    }
-                  }
-                }
-        }
-        stage('Cleanup') {            
-            when {  branch 'feature/*'  }
-            steps {     
-                echo 'cleanup....'   
-                script{
-                    if (params.SKIP_CLEANUP == false && params.SKIP_DEPLOY == false)
-                    {
-                       withCredentials([sshUserPrivateKey(credentialsId: "ck2-olga", keyFileVariable: 'keyfile')]){         
-                        sh "ssh -i ${keyfile} ubuntu@52.31.114.218 -o StrictHostKeyChecking=no  docker rm -f todo-olgag 2> /dev/null || true"
-                        sh "ssh -i ${keyfile} ubuntu@52.31.114.218 -o StrictHostKeyChecking=no  docker rmi 644435390668.dkr.ecr.eu-west-1.amazonaws.com/todo:olgag.${env.BUILD_ID} 2> /dev/null || true"
-                    }
-                }               
-            }
-        }   
-    }
+    //         steps {
+    //               timeout(time: 5, unit: 'SECONDS') {  
+    //                 retry(5) {
+    //                         script{
+    //                            sh "curl http://52.31.114.218:${COW_FORWARDED_PORT}"                           
+    //                         }   
+    //                 }
+    //               }
+    //             }
+    //     }
+    //     stage('Cleanup') {            
+    //         when {  branch 'feature/*'  }
+    //         steps {     
+    //             echo 'cleanup....'   
+    //             script{
+    //                 if (params.SKIP_CLEANUP == false && params.SKIP_DEPLOY == false)
+    //                 {
+    //                    withCredentials([sshUserPrivateKey(credentialsId: "ck2-olga", keyFileVariable: 'keyfile')]){         
+    //                     sh "ssh -i ${keyfile} ubuntu@52.31.114.218 -o StrictHostKeyChecking=no  docker rm -f todo-olgag 2> /dev/null || true"
+    //                     sh "ssh -i ${keyfile} ubuntu@52.31.114.218 -o StrictHostKeyChecking=no  docker rmi 644435390668.dkr.ecr.eu-west-1.amazonaws.com/todo:olgag.${env.BUILD_ID} 2> /dev/null || true"
+    //                 }
+    //             }               
+    //         }
+    //     }   
+    // }
     }
  //   post {
  //       always {
