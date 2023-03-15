@@ -29,7 +29,7 @@ pipeline {
          }
         }
         }
-    }
+    
      /// Enf of Var definitions
 
       stage('Git Clone') {
@@ -142,7 +142,7 @@ pipeline {
                   git commit -m 'Update image tag in values.yaml'
                   git push
                """
-            }
+            }           
          }
         }
         
@@ -206,3 +206,4 @@ pipeline {
 //        }
 //    }
 
+}
