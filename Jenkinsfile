@@ -137,7 +137,7 @@ pipeline {              pipeline
                   sed -i 's/tag: todo-.*\$/tag: todo-${env.VERSION}/' values.yaml                  
                  
                   git add values.yaml
-                  git commit -m "Update image tag in values.yaml"
+                  git commit -m 'Update image tag in values.yaml'
                   git push
                "
             }
