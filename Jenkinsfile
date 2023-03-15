@@ -131,7 +131,8 @@ pipeline {              pipeline
         stage('Update GitOps with newVersion') {
          steps {
             sshagent(['olga-github']) {
-               sh "
+               sh """
+                  rm -Rf portfolio-gitops
                   git clone git@github.com:opsdev968/portfolio-gitops.git
                   cd portfolio-gitops/todoapp/
                   sed -i 's/tag: todo-.*\$/tag: todo-${env.VERSION}/' values.yaml                  
@@ -139,7 +140,7 @@ pipeline {              pipeline
                   git add values.yaml
                   git commit -m 'Update image tag in values.yaml'
                   git push
-               "
+               """
             }
          }
       }
