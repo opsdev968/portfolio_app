@@ -143,8 +143,8 @@ pipeline {              pipeline
                """
             }
          }
-      }
-        }      
+        }
+        
         stage('Deploy EC2') {
              when {
                     anyOf { branch 'master'                      
