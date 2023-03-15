@@ -1,4 +1,4 @@
-pipeline {              
+pipeline {              pipeline
     agent any
      environment { 
          AWS_REGION = 'eu-west-2'
@@ -124,7 +124,26 @@ pipeline {
                     sh "docker push ${env.ECR_URI}:${env.IMG_NAME}-${env.VERSION}"
             }
             }
-        }         
+        }   
+        
+         //sed -i 's/"tag: todo-.*$/image: <your-new-image-tag>/' values.yaml
+
+        stage('Update GitOps with newVersion') {
+         steps {
+            sshagent(['olga-github']) {
+               sh "
+                  git clone git@github.com:opsdev968/portfolio-gitops.git
+                  cd portfolio-gitops/todoapp/
+                  sed -i 's/tag: todo-.*\$/tag: todo-${env.VERSION}/' values.yaml                  
+                 
+                  git add values.yaml
+                  git commit -m "Update image tag in values.yaml"
+                  git push
+               "
+            }
+         }
+      }
+        }      
         stage('Deploy EC2') {
              when {
                     anyOf { branch 'master'                      
